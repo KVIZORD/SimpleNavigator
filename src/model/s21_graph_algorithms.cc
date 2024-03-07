@@ -1,7 +1,8 @@
 #include "s21_graph_algorithms.h"
 
-#include "libs/s21_queue.h"
-#include "libs/s21_stack.h"
+#include <queue>
+#include <stack>
+
 #include "traveling_salesman/ant_colony_algorithm/ant_colony_solver.h"
 #include "traveling_salesman/genetic_algorithm/crossover.h"
 #include "traveling_salesman/genetic_algorithm/genetic_solver.h"
@@ -20,23 +21,23 @@ std::vector<size_t> GraphAlgorithms::DepthFirstSearch(Graph& graph,
   std::vector<bool> visited(graph.GetSize());
   size_t start = static_cast<size_t>(start_vertex) - 1;
   visited[start] = true;
-  Stack<size_t> stack;
-  stack.Push(start);
+  std::stack<size_t> stack;
+  stack.push(start);
   std::vector<size_t> result;
   result.push_back(start);
-  while (!stack.Empty()) {
-    size_t current = stack.Top();
+  while (!stack.empty()) {
+    size_t current = stack.top();
     bool vertex_has_children = false;
     for (size_t i = 0; i < graph.GetSize(); ++i) {
       if (graph.GetData()[current][i] && !visited[i]) {
         visited[i] = true;
         vertex_has_children = true;
-        stack.Push(i);
+        stack.push(i);
         result.push_back(i);
         current = i;
       }
     }
-    if (!vertex_has_children) stack.Pop();
+    if (!vertex_has_children) stack.pop();
   }
   return result;
 }
@@ -50,17 +51,17 @@ std::vector<size_t> GraphAlgorithms::BreadthFirstSearch(Graph& graph,
   std::vector<bool> visited(graph.GetSize());
   size_t start = static_cast<size_t>(start_vertex) - 1;
   visited[start] = true;
-  Queue<size_t> queue;
-  queue.Push(start);
+  std::queue<size_t> queue;
+  queue.push(start);
   std::vector<size_t> result;
   result.push_back(start);
-  while (!queue.Empty()) {
-    size_t current = queue.Front();
-    queue.Pop();
+  while (!queue.empty()) {
+    size_t current = queue.front();
+    queue.pop();
     for (size_t i = 0; i < graph.GetSize(); ++i) {
       if (graph.GetData()[current][i] && !visited[i]) {
         visited[i] = true;
-        queue.Push(i);
+        queue.push(i);
         result.push_back(i);
       }
     }
@@ -80,17 +81,17 @@ size_t GraphAlgorithms::GetShortestPathBetweenVertices(Graph& graph,
   size_t start = vertex1 - 1;
   size_t finish = vertex2 - 1;
   min_length[start] = 0;
-  Queue<size_t> queue;
-  queue.Push(start);
-  while (!queue.Empty()) {
-    size_t vertex = queue.Front();
-    queue.Pop();
+  std::queue<size_t> queue;
+  queue.push(start);
+  while (!queue.empty()) {
+    size_t vertex = queue.front();
+    queue.pop();
     for (size_t i = 0; i < graph.GetSize(); ++i) {
       size_t weight = graph.GetData()[vertex][i];
       if (i != vertex && weight &&
           min_length[vertex] + weight < min_length[i]) {
         min_length[i] = min_length[vertex] + weight;
-        queue.Push(i);
+        queue.push(i);
       }
     }
   }

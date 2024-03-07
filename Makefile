@@ -1,6 +1,4 @@
 BUILD_DIR = build
-DOCS_DIR = docs
-TEXI2DVI = texi2dvi
 TEST_EXE = SimpleNavigatorTests
 REPORT_FLAG =
 
@@ -22,7 +20,7 @@ all: s21_graph.a s21_graph_algorithms.a
 
 clean:
 	rm -rf $(BUILD_DIR)
-	rm -rf s21_lcov_report filename
+	rm -rf s21_lcov_report
 
 test: build
 	cmake --build $(BUILD_DIR) --target $(TEST_EXE)
